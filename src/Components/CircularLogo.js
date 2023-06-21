@@ -5,7 +5,7 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { useTheme } from '../Constext/themeContext';
 import GoogleButton from 'react-google-button';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { auth } from '../firebaseConfig';
 import errorMapping from '../Utils/errorMapping';
@@ -56,10 +56,10 @@ const CircularLogo = () => {
     const googleProvider = new GoogleAuthProvider();
 
     //when user click on button of login with `google`.
-    const handleGoogleAuthClick = () => {
+    const handleGoogleAuthClick = (e) => {
         console.log("google aut ")
-        signInWithPopup(auth, googleProvider).then((res) => {
-            console.log("res", res)
+        signInWithRedirect(auth, googleProvider).then((res) => {
+            console.log("g res", res)
             toast.sucess("google login successful", {
                 position: "top-right",
                 autoClose: 5000,
@@ -73,19 +73,18 @@ const CircularLogo = () => {
             //when user is login in successfully then.
             //momdal is colse.
             handleClose();
+        }).catch((err) => {
+            toast.error([err.code] || "login with google is failed", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         })
-            .catch((err) => {
-                toast.error([err.code] || "login with google is failed", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-            })
 
         //when user click on the logout icon.
         // const logOut = () => {

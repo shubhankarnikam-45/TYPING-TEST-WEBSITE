@@ -89,7 +89,7 @@ ChartJS.register(
 );
 
 const Graph = ({ graphData }) => {
-    console.log("in grah")
+
     const { theme } = useTheme();
 
     return (
@@ -102,7 +102,7 @@ const Graph = ({ graphData }) => {
                             {
                                 data: graphData.map(i => i[1]),
                                 label: 'wpm',
-                                borderColor: theme.title
+                                borderColor: theme.textColor,
                             }
                         ]
                     }
