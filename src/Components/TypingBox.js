@@ -7,6 +7,8 @@ import Stats from './Stats';
 
 function TypingBox() {
 
+
+
     //here we creating the two useState
     //1. for the currentWordIndex.
     //2. for the currrntCharIndex.
@@ -35,7 +37,7 @@ function TypingBox() {
 
     //this state will store the words that generated randomly.
     let [wordArray, setWordArray] = useState(() => {
-        let wordCount = generate(60);
+        let wordCount = generate(50);
         return wordCount;
     })
 
@@ -61,17 +63,39 @@ function TypingBox() {
     //here we create to generat the graph-data.
     const [graphData, setGraphData] = useState([]);
 
+    //checking that the array is empty or not.
+    const [arrayIsEmptyOrNot, setArrayIsEmptyOrNot] = useState(true);
+
+
+    //
+    // useEffect(() => {
+    //     setArrayIsEmptyOrNot(true);
+    // }, [wordArray])
+    // const emptySpans = () => {
+    //     return Array(wordArray.length)
+    //         .fill(0)
+    //         .map((i) => createRef(null));
+    // }
+
+    //words array ref.
+    // const [wordsArrayRef, setWordsArrayRef] = useState(emptySpans());
+
+    // /demo
+
+
 
     //this below console.log() for testing purpose.
     // console.log(correctChars, incorrectChars, missingChars, extraChars)
     // console.log("correct words", correcWords);
 
-    //here we want each word ref in the wordsArrayRef Array and child inside it which is individula characters.
+    // here we want each word ref in the wordsArrayRef Array and child inside it which is individula characters.
     const wordsArrayRef = useMemo(() => {
+        console.log("in array")
         console.log("words Array", wordArray)
         return Array(wordArray.length).fill(0).map(i => createRef(null));
     }, [wordArray])
 
+    console.log("outside wordsarrayref", wordsArrayRef)
 
     //here we store the refrence of input box using the `useRef` hook.
     let userInput = useRef(null);
@@ -112,7 +136,21 @@ function TypingBox() {
     //resetting functionality.
 
     const resetTest = () => {
+        //reset the test. using interval id.
+        clearInterval(clearIntervalId)
 
+
+        //creating one function that removes the all styling applying on words array.
+        resetStyling();
+        console.log("in reset function")
+
+        //word array creating (words see on the screen)
+        let temp = generate(50);
+        console.log("temp", temp)
+        setWordArray(temp);
+        // setWordsArrayRef(emptySpans())
+
+        console.log("war", wordsArrayRef)
 
         setCounter(testTime);
         setCurrentWordIndex(0);
@@ -128,19 +166,11 @@ function TypingBox() {
         //focus on words.
         focusInput();
 
-        //word array creating (words see on the screen)
-        let temp = generate(60);
-        console.log("temp", temp)
-        setWordArray(temp);
 
+        // if (arrayIsEmptyOrNot != false)
         wordsArrayRef[0].current.childNodes[0].className = 'blinking-div'
 
-        //reset the test. using interval id.
-        clearInterval(clearIntervalId)
 
-
-        //creating one function that removes the all styling applying on words array.
-        resetStyling();
 
     }
 
@@ -171,7 +201,8 @@ function TypingBox() {
     //this function handle the user input which type in the input-box.
     function handleKeyDown(e) {
 
-        console.log(isTestEnd, isTestStart);
+
+
 
         if (isTestEnd && isTestEnd) {
             return;
@@ -182,13 +213,13 @@ function TypingBox() {
         // }
 
         const allcurrentChars = wordsArrayRef[currentWordIndex].current.childNodes;
-
+        console.log('acc', allcurrentChars)
         if (!isTestStart) {
             setIsTestStart(true);
             TimerFunctinality();
 
         }
-
+        console.log("war2", wordsArrayRef)
 
         //if user enter the space then.
         //code is given below.
@@ -375,8 +406,7 @@ function TypingBox() {
 
     //creating the function for retun the accuracyof correct word. using mathematical formula
     const calculateAccuracy = () => {
-        console.log("correct words", correcWords);
-        console.log("incorrec ord", currentWordIndex)
+
         return (
             Math.round((correcWords / currentWordIndex) * 100)
         )

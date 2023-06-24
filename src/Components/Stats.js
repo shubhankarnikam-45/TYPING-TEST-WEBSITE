@@ -31,6 +31,7 @@ const Stats = ({
             return;
         }
         const resultRef = db.collection("Result");
+        //this uid contains the current user ID which is very important.
         const { uid } = auth.currentUser;
         resultRef.add({
             wpm: wpm,
@@ -39,18 +40,8 @@ const Stats = ({
             chracters: `${correctChars}/ ${incorrectChars}/ ${missingChars}/ ${extraChars}`,
             userId: uid
         }).then((res) => {
-            toast.sucess('data saved to database', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        }).catch((err) => {
-            toast.warning('data not saved to database', {
+
+            toast.success('data saved to database', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -61,9 +52,21 @@ const Stats = ({
                 theme: "light",
             });
         })
+            .catch((err) => {
+                toast.warning('data not saved to database', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
     }
 
-    //using useEffect .
+    //using useEffect we ensure that when user exists then we push data to DB.
     useEffect(() => {
         if (auth.currentUser) {
             pushDataToDB();
