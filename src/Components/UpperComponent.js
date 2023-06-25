@@ -4,11 +4,19 @@ const UpperComponent = ({ counter }) => {
 
     let { setTestTime } = useTestMode();
 
-
+    let { testTime } = useTestMode();
     function handleClick(e) {
+        console.log(testTime)
+        console.log("ie", e.target.id)
+
+        if (testTime === e.target.id) {
+            setTestTime(Math.round(+e.target.id + 0.4));
+        }
+        else {
+            setTestTime(e.target.id);
+        }
 
 
-        setTestTime(e.target.id);
 
     }
     return (

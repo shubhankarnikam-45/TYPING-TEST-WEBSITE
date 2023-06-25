@@ -13,6 +13,7 @@ function App() {
 
     <ThemeProvider theme={theme}>
       <div className="App">
+
         <ToastContainer />
         <GlobalStyles />
         <Routes>

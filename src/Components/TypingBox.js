@@ -6,8 +6,7 @@ import { useTestMode } from '../Constext/TestModeContext';
 import Stats from './Stats';
 
 function TypingBox() {
-
-
+    console.log("render")
 
     //here we creating the two useState
     //1. for the currentWordIndex.
@@ -140,8 +139,10 @@ function TypingBox() {
         clearInterval(clearIntervalId)
 
 
+        console.log("waf", wordsArrayRef)
         //creating one function that removes the all styling applying on words array.
-        resetStyling();
+        if (wordsArrayRef[0].current !== null)
+            resetStyling();
         console.log("in reset function")
 
         //word array creating (words see on the screen)
@@ -168,7 +169,8 @@ function TypingBox() {
 
 
         // if (arrayIsEmptyOrNot != false)
-        wordsArrayRef[0].current.childNodes[0].className = 'blinking-div'
+        if (wordsArrayRef[0].current != null)
+            wordsArrayRef[0].current.childNodes[0].className = 'blinking-div'
 
 
 

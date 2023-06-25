@@ -9,7 +9,7 @@ import UserInfo from '../Components/UserInfo';
 
 const UserPage = () => {
 
-    //to know the firebase is loading or not.
+    //to know the firebase is loading or not. and also we get the current user.
     const [user, loading] = useAuthState(auth);
 
     //for graph data
@@ -25,10 +25,15 @@ const UserPage = () => {
     const navigate = useNavigate();
     //creting one function to fetchData.
     function fetchData() {
+        //using this we get data from the database. 
         const resultsRef = db.collection("Result");
+        //here we getting the current user bcoz when we according to user-id,of logged.
+        //user we fetch the data in user page.
+        //here due to snapshot we get the all data to filter we want [uid]
         const { uid } = auth.currentUser;
         let tempData = [];
         let tempGraphData = [];
+        //there get() Fn is used to the 'data' that is 'snapshots' from the DB
         resultsRef.where('userId', '==', uid)
             .orderBy('timeStamp', 'desc')
             .get().then((snapshot) => {
@@ -47,6 +52,7 @@ const UserPage = () => {
         if (!loading) {
             fetchData();
         }
+        //if user is not logged in. then we navigate to the "home page"
         if (!loading && !user) {
             navigate('/');
         }
